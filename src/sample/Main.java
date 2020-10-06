@@ -24,90 +24,10 @@ public class Main extends Application{
     String server = "com.mysql.cj.jdbc.Driver";
     public String url = "jdbc:mysql://127.0.0.1:3306/?user=root/Dictionary";
 
-    public void readFile()  {
-
-        try {
-
-            BufferedReader b = new BufferedReader(new FileReader("C:\\Users\\raouf\\IdeaProjects\\ArabicDictonary\\src\\sample\\word.txt"));
-
-            int count = 0;
-            String s;
-            Data node= new Data();
-            do {
-
-
-
-                s = b.readLine();
-                s= s.toLowerCase();
-
-                if(s == null)
-                    break;
-                if(count%2 == 0){
-                    node.setArabicWord(s);
-                }else{
-                    node.setEnglishWord(s);
-                    wordsData.addWord(node);
-                    node = new Data();
-                }
-                count++;
-            }while(s != null);
-
-
-        }catch (Exception e){
-
-        }
-
-    }
-
     @Override
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("app.fxml"));
         Parent root = loader.load();
-       // wordsData.addWord("i","أنا","ana hon","[A.Na]");
-        //readFile();
-
-//        Connection com = null;
-//        Statement st = null;
-//
-//
-//            String MYSQL_DRIVER = server = "com.mysql.cj.jdbc.Driver";
-//            String MYSQL_URL = url;
-//
-//             Connection con;
-//
-//             ResultSet rs;
-//
-//            try {
-//                Class.forName(MYSQL_DRIVER);
-//                System.out.println("Class Loaded....");
-//                con = DriverManager.getConnection(MYSQL_URL,"root","root");
-//                System.out.println("Connected to the database....");
-//                st = con.createStatement();
-//
-//                rs =  st.executeQuery("select * FROM words.arabicDictionary");
-//                while (rs.next()){
-//                //String next = rs.getString(1);
-//                // System.out.println(next);
-//                    Data node = new Data(rs.getString("word").toLowerCase(),rs.getString("meaning"),rs.getString("Example_sentence"),rs.getString("IPA"));
-//                   node.setSentenceMeaning(rs.getString("Sentence_meaning"));
-//                    wordsData.addWord(node);
-//                    //wordsData.addWord(rs.getString("word").toLowerCase(),rs.getString("meaning"),rs.getString("Example_sentence"),rs.getString("IPA"));
-//
-//                }
-//                con.close();
-//
-//                wordsData.printList();
-//
-//
-//            } catch(ClassNotFoundException ex) {
-//                System.out.println("ClassNotFoundException:\n"+ex.toString());
-//                ex.printStackTrace();
-//
-//            } catch(SQLException ex) {
-//                System.out.println("SQLException:\n"+ex.toString());
-//                ex.printStackTrace();
-//            }
-
 
         String line = "";
         try {
