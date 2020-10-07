@@ -20,8 +20,9 @@ public class Main extends Application{
 
         String line = "";
         try {
-            BufferedReader bf = new BufferedReader(new FileReader("C:\\Users\\raouf\\IdeaProjects\\Dictonary\\src\\sample\\arabicWords.csv"));
-
+            InputStreamReader reader = new InputStreamReader(new FileInputStream("C:\\Users\\raouf\\IdeaProjects\\Dictonary\\src\\sample\\arabicWords.csv"),"utf-8");
+            //BufferedReader bf = new BufferedReader(new FileReader("C:\\Users\\raouf\\IdeaProjects\\Dictonary\\src\\sample\\arabicWords.csv"));
+            BufferedReader bf = new BufferedReader(reader);
             Node node = null;
             int flag =0;
             while ((line = bf.readLine()) != null ){
@@ -52,6 +53,10 @@ public class Main extends Application{
         catch (FileNotFoundException e){
             e.printStackTrace();
         }
+        catch (UnsupportedEncodingException e ){
+
+        }
+        catch (IOException e){}
 
 
         wordData.printList();
