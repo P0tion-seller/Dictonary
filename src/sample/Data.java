@@ -4,125 +4,88 @@ import java.security.Key;
 import java.util.*;
 import java.util.regex.PatternSyntaxException;
 
+
 public class Data {
 
-    private HashSet<String> EngWord= new HashSet<>();
-    private HashSet<String>  AWord = new HashSet<>();
-    private Map<String,String> Plural = new HashMap<>();
-
-    private String IPA;// international phonetic alphabet for future release
-
-    private String wordType;
-    private HashSet<Data> Node;
-
-    private ArrayList<String> Example = new ArrayList<>(); // sentence example in arabic
-    private ArrayList<String>  sen = new ArrayList<>();//sentence meaning
+    public static LinkedList<Node> nodelist =  new LinkedList<>();;
+    private Node node;
 
 
-    public Data(){
-        Node = new HashSet<Data>();
+    public Data(Node n) {//constructor
+        nodelist.add(n);
+    }
+    public Data() {//constructor
+        System.out.println("beginning Node made.");
     }
 
-    public Data(String eng,String a,String type){
-
-        try {
-            String temp [] = eng.split(";");
-            for(String x : temp){
-                EngWord.add(x);
-                AWord. add(a);
-                wordType = type;
-                Node = new HashSet<Data>();
-            }
-        }catch (PatternSyntaxException e){
-
-            EngWord.add(eng);
-            AWord.add(a);
-            wordType = type;
-            Node = new HashSet<Data>();
-
-        }
-
-
+    public void addWord(Node n) {
+        nodelist.add(n);
     }
 
-    public void addWord(String eng,String a,String type){
-        Data word = new Data(eng,a,type);
-        Node.add(word);
-    }
+    /*
+    *
+    * Find the word in the dictonary and all other possible words that have the same meaning
+    * */
+    public ArrayList<Node> findWord(String Word) throws wordNotFound {
 
-    public void addWord(Data d){
-        Data word = d;
-        Node.add(word);
-    }
-
-    public ArrayList<Data> findWord(String Word) throws Exception{
-        if (Node == null || Node.isEmpty()){
+        if (nodelist.isEmpty()) {
             return null;
         }
-        ArrayList<Data> allWords= new ArrayList<>();
-        for (Data x :Node){
-            if(x.EngWord.contains(Word) ||x.AWord.contains(Word))
-                allWords.add(x);
-           // if(x.EngWord.equals(Word))
-                //return x;
-        }
-        return allWords;
+        ArrayList<Node> all_possible_words = new ArrayList<>();//all the possbile words that have the same meaning
+
+        for (Node x : nodelist) {// iterate through the nodelist
+            if (x.ENG.contains(Word) || x.ARABIC.contains(Word))// check to see if the node is that word the user requested
+                all_possible_words.add(x);
+        }//end for
+        return all_possible_words;// return all the possible combination
+
     }
 
     public void printList(){
-        for (Data x :Node){
-            System.out.println(x.EngWord +": "+x.getWordType()+": "+x.AWord);
+        for (Node x : nodelist){
+            System.out.println(x.ENG+": "+x.ARABIC+" :"+x.WORDTYPE);
         }
+
     }
 
+}//end class
 
-    public HashSet<String> getEnglishWord(){
-        return  EngWord;
-    }
+ class Node {
 
-    public HashSet<String> getArabicWord(){
-        return AWord;
-    }
+     public HashSet<String> ENG= new HashSet<>();//english word
+     public HashSet<String>  ARABIC = new HashSet<>();//arabic word
+     public Map<String,String> DETAIL = new HashMap<>();// the plural or detail forms
 
-    public void setEnglishWord(String setWord){
-        EngWord.add(setWord);
-    }
+     private String IPA;// international phonetic alphabet for future release
 
-    public void setArabicWord(String setWord){ AWord.add(setWord); }
+     public String WORDTYPE;
 
-    public String getIPA(){
-        return IPA;
-    }
+     public ArrayList<String> EXAMPLE = new ArrayList<>(); // sentence example in arabic
+     public ArrayList<String>  SEN_MEANING = new ArrayList<>();//sentence meaning
 
-    public ArrayList<String> getSentence() {
-        return Example;
-    }
+     public Node(String eng,String a, String type){
+         //insert the info of the word into the dictionary
+         try {
+             String temp [] = eng.split(";");// if the meaning contains ; then remove then to help the search
+             for(String x : temp){
+                 ENG.add(x);
+                 ARABIC. add(a);
+                 WORDTYPE = type;
+             }
+         }catch (PatternSyntaxException e){// if no ; it will catch the issue and continue as normal
+             ENG.add(eng);
+             ARABIC.add(a);
+             WORDTYPE = type;
+         }//end try catch
+     }//constructor
 
-    public void setSentence(String e) {
-        Example.add(e);
-    }
+     public void setSentence(String x) {
+         EXAMPLE.add(x);
+     }
 
-    public void setSenMeaning(String s) {
-        sen.add(s);
-    }
+     public void setSenMeaning(String x) {
+         SEN_MEANING.add(x);
+     }
 
-    public ArrayList<String> getSenMeaning() {
-        return  sen;
-    }
 
-    public void setWordType(String w) {
-        this.wordType = w;
-    }
-
-    public String getWordType() {
-        return  wordType;
-    }
-
-    public  String getPlural(String key) {
-        return Plural.get(key);
-    }
-
-    public void setPlural(String key,String plural) {
-        Plural.put(key,plural);
-    }
-}
+ }
